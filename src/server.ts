@@ -18,6 +18,8 @@ import {
     handleComprehensiveAnalysisTool,
     securityAnalyzerToolDefinition,
     handleSecurityAnalyzerTool,
+    infraGenToolDefinition,
+    handleInfraGenTool,
 } from './tools/index.js';
 
 export function createStandaloneServer(apiKey: string): Server {
@@ -40,7 +42,7 @@ export function createStandaloneServer(apiKey: string): Server {
     });
 
     serverInstance.setRequestHandler(ListToolsRequestSchema, async () => ({
-        tools: [claudeChatToolDefinition, claudeCompletionToolDefinition, githubAnalyzerToolDefinition, cloudAnalyzerToolDefinition, securityAnalyzerToolDefinition, comprehensiveAnalysisToolDefinition],
+        tools: [claudeChatToolDefinition, claudeCompletionToolDefinition, githubAnalyzerToolDefinition, cloudAnalyzerToolDefinition, securityAnalyzerToolDefinition, infraGenToolDefinition, comprehensiveAnalysisToolDefinition],
     }));
 
     serverInstance.setRequestHandler(CallToolRequestSchema, async (request) => {
@@ -57,6 +59,8 @@ export function createStandaloneServer(apiKey: string): Server {
                 return await handleCloudAnalyzerTool(claudeClient, args);
             case "analyze_security_posture":
                 return await handleSecurityAnalyzerTool(claudeClient, args as any);
+            case "generate_terraform_infrastructure":
+                return await handleInfraGenTool(claudeClient, args as any);
             case "analyze_repository_and_cloud":
                 return await handleComprehensiveAnalysisTool(claudeClient, args);
             default:

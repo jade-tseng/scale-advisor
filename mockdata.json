@@ -1,0 +1,82 @@
+{
+  "region": "us-east-1",
+  "accountId": "123456789012",
+  "ec2Instances": [
+    {
+      "instanceId": "i-0123456789abcdef0",
+      "instanceType": "t3.medium",
+      "state": "running",
+      "availabilityZone": "us-east-1a",
+      "publicIpAddress": "54.123.45.67",
+      "privateIpAddress": "10.0.1.100",
+      "launchTime": "2024-08-20T10:30:00Z",
+      "tags": {
+        "Name": "web-server-prod",
+        "Environment": "production",
+        "Application": "frontend"
+      },
+      "securityGroups": ["sg-web-prod", "sg-ssh-access"],
+      "vpcId": "vpc-12345678",
+      "subnetId": "subnet-12345678"
+    },
+    {
+      "instanceId": "i-0987654321fedcba0",
+      "instanceType": "t3.large",
+      "state": "running",
+      "availabilityZone": "us-east-1b",
+      "publicIpAddress": "54.123.45.68",
+      "privateIpAddress": "10.0.2.100",
+      "launchTime": "2024-08-18T14:15:00Z",
+      "tags": {
+        "Name": "api-server-prod",
+        "Environment": "production",
+        "Application": "backend"
+      },
+      "securityGroups": ["sg-api-prod", "sg-ssh-access"],
+      "vpcId": "vpc-12345678",
+      "subnetId": "subnet-87654321"
+    },
+    {
+      "instanceId": "i-0abcdef123456789",
+      "instanceType": "t3.small",
+      "state": "stopped",
+      "availabilityZone": "us-east-1a",
+      "privateIpAddress": "10.0.1.101",
+      "launchTime": "2024-08-15T09:00:00Z",
+      "tags": {
+        "Name": "staging-server",
+        "Environment": "staging",
+        "Application": "testing"
+      },
+      "securityGroups": ["sg-staging", "sg-ssh-access"],
+      "vpcId": "vpc-12345678",
+      "subnetId": "subnet-12345678"
+    }
+  ],
+  "rdsInstances": [
+    {
+      "dbInstanceIdentifier": "prod-postgres-main",
+      "dbInstanceClass": "db.t3.medium",
+      "engine": "postgres",
+      "engineVersion": "15.4",
+      "dbInstanceStatus": "available",
+      "availabilityZone": "us-east-1a",
+      "endpoint": {
+        "address": "prod-postgres-main.c123456789.us-east-1.rds.amazonaws.com",
+        "port": 5432
+      },
+      "allocatedStorage": 100,
+      "storageType": "gp3",
+      "multiAZ": true,
+      "vpcId": "vpc-12345678",
+      "subnetGroupName": "prod-db-subnet-group",
+      "securityGroups": ["sg-database-prod"],
+      "backupRetentionPeriod": 7,
+      "tags": {
+        "Name": "prod-postgres-main",
+        "Environment": "production",
+        "Application": "database"
+      }
+    }
+  ]
+}

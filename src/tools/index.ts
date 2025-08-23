@@ -24,3 +24,8 @@ export {
     securityAnalyzerToolDefinition,
     handleSecurityAnalyzerTool,
 } from './security-analyzer.js';
+
+export {
+    infraGenToolDefinition,
+    handleInfraGenTool,
+} from './infra-gen.js';

@@ -23,7 +23,7 @@ async function testComprehensiveAnalysis() {
 
         // Test arguments
         const testArgs = {
-            repository_url: "https://github.com/microsoft/vscode",
+            repository_url: "https://github.com/microsoft/vscode", // change to test repository
             analysis_depth: "detailed",
             focus_areas: ["scalability", "security", "performance"]
         };

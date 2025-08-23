@@ -19,3 +19,8 @@ export {
     comprehensiveAnalysisToolDefinition,
     handleComprehensiveAnalysisTool,
 } from './recommendation-output.js';
+
+export {
+    securityAnalyzerToolDefinition,
+    handleSecurityAnalyzerTool,
+} from './security-analyzer.js';

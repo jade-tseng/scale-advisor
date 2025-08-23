@@ -16,6 +16,8 @@ import {
     handleCloudAnalyzerTool,
     comprehensiveAnalysisToolDefinition,
     handleComprehensiveAnalysisTool,
+    securityAnalyzerToolDefinition,
+    handleSecurityAnalyzerTool,
 } from './tools/index.js';
 
 export function createStandaloneServer(apiKey: string): Server {
@@ -38,7 +40,7 @@ export function createStandaloneServer(apiKey: string): Server {
     });
 
     serverInstance.setRequestHandler(ListToolsRequestSchema, async () => ({
-        tools: [claudeChatToolDefinition, claudeCompletionToolDefinition, githubAnalyzerToolDefinition, cloudAnalyzerToolDefinition, comprehensiveAnalysisToolDefinition],
+        tools: [claudeChatToolDefinition, claudeCompletionToolDefinition, githubAnalyzerToolDefinition, cloudAnalyzerToolDefinition, securityAnalyzerToolDefinition, comprehensiveAnalysisToolDefinition],
     }));
 
     serverInstance.setRequestHandler(CallToolRequestSchema, async (request) => {
@@ -50,9 +52,11 @@ export function createStandaloneServer(apiKey: string): Server {
             case "claude_completion":
                 return await handleClaudeCompletionTool(claudeClient, args);
             case "github_analyze_repository":
-                return await handleGitHubAnalyzerTool(claudeClient, args);
+                return await handleGitHubAnalyzerTool(claudeClient, args as any);
             case "analyze_cloud_resources":
                 return await handleCloudAnalyzerTool(claudeClient, args);
+            case "analyze_security_posture":
+                return await handleSecurityAnalyzerTool(claudeClient, args as any);
             case "analyze_repository_and_cloud":
                 return await handleComprehensiveAnalysisTool(claudeClient, args);
             default:

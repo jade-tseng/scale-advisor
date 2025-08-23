@@ -21,7 +21,8 @@ export const githubAnalyzerToolDefinition: Tool = {
         properties: {
             repository_url: {
                 type: "string",
-                description: "The GitHub repository URL to analyze (e.g., https://github.com/owner/repo)"
+                description: "The GitHub repository URL to analyze (e.g., https://github.com/owner/repo)",
+                default: "https://github.com/microsoft/vscode"
             },
             analysis_depth: {
                 type: "string",
@@ -35,7 +36,7 @@ export const githubAnalyzerToolDefinition: Tool = {
                 default: true
             }
         },
-        required: ["repository_url"],
+        required: [],
     },
 };
 
@@ -142,29 +143,32 @@ Please search for the repository and provide a concise but informative overview.
  * Handles GitHub repository analysis tool calls
  */
 export async function handleGitHubAnalyzerTool(
-    client: ClaudeClient, 
-    args: unknown
+    claudeClient: ClaudeClient,
+    args: GitHubAnalyzerArgs | undefined
 ): Promise<CallToolResult> {
     try {
-        if (!args) {
-            throw new Error("No arguments provided");
-        }
+        // Provide defaults if no args provided
+        const safeArgs: GitHubAnalyzerArgs = {
+            repository_url: args?.repository_url || "https://github.com/microsoft/vscode",
+            analysis_depth: args?.analysis_depth || "basic",
+            include_dependencies: args?.include_dependencies ?? true
+        };
 
-        if (!isGitHubAnalyzerArgs(args)) {
+        if (!isGitHubAnalyzerArgs(safeArgs)) {
             throw new Error("Invalid arguments for github_analyze_repository. Repository URL is required and must be a valid GitHub URL.");
         }
 
         // Parse GitHub URL
-        const repoInfo = parseGitHubUrl(args.repository_url);
+        const repoInfo = parseGitHubUrl(safeArgs.repository_url);
         if (!repoInfo) {
             throw new Error("Invalid GitHub URL format. Please provide a valid GitHub repository URL (e.g., https://github.com/owner/repo)");
         }
 
         // Generate analysis prompt
-        const analysisPrompt = generateAnalysisPrompt(repoInfo, args);
+        const analysisPrompt = generateAnalysisPrompt(repoInfo, safeArgs);
 
         // Use Claude to analyze the repository
-        const result = await client.chatCompletion({
+        const result = await claudeClient.chatCompletion({
             messages: [
                 {
                     role: "user",

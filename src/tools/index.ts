@@ -9,3 +9,8 @@ export {
     githubAnalyzerToolDefinition,
     handleGitHubAnalyzerTool,
 } from './github-analyzer.js';
+
+export {
+    cloudAnalyzerToolDefinition,
+    handleCloudAnalyzerTool,
+} from './cloud-analyzer.js';

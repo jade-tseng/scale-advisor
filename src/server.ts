@@ -14,6 +14,8 @@ import {
     handleGitHubAnalyzerTool,
     cloudAnalyzerToolDefinition,
     handleCloudAnalyzerTool,
+    comprehensiveAnalysisToolDefinition,
+    handleComprehensiveAnalysisTool,
 } from './tools/index.js';
 
 export function createStandaloneServer(apiKey: string): Server {
@@ -36,7 +38,7 @@ export function createStandaloneServer(apiKey: string): Server {
     });
 
     serverInstance.setRequestHandler(ListToolsRequestSchema, async () => ({
-        tools: [claudeChatToolDefinition, claudeCompletionToolDefinition, githubAnalyzerToolDefinition, cloudAnalyzerToolDefinition],
+        tools: [claudeChatToolDefinition, claudeCompletionToolDefinition, githubAnalyzerToolDefinition, cloudAnalyzerToolDefinition, comprehensiveAnalysisToolDefinition],
     }));
 
     serverInstance.setRequestHandler(CallToolRequestSchema, async (request) => {
@@ -51,6 +53,8 @@ export function createStandaloneServer(apiKey: string): Server {
                 return await handleGitHubAnalyzerTool(claudeClient, args);
             case "analyze_cloud_resources":
                 return await handleCloudAnalyzerTool(claudeClient, args);
+            case "analyze_repository_and_cloud":
+                return await handleComprehensiveAnalysisTool(claudeClient, args);
             default:
                 return {
                     content: [{ type: "text", text: `Unknown tool: ${name}` }],

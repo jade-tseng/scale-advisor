@@ -297,7 +297,7 @@ export async function handleCloudAnalyzerTool(
                     content: analysisPrompt
                 }
             ],
-            model: "claude-3-5-sonnet-20241022",
+            model: "claude-3-7-sonnet-20250219",
             max_tokens: 2048,
             temperature: 0.3, // Lower temperature for more factual analysis
             system: "You are a senior cloud architect and DevOps expert specializing in AWS infrastructure analysis. Provide detailed, actionable insights about cloud resources, focusing on best practices, security, performance, and cost optimization. Use clear formatting with headers and bullet points."

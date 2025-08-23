@@ -14,3 +14,8 @@ export {
     cloudAnalyzerToolDefinition,
     handleCloudAnalyzerTool,
 } from './cloud-analyzer.js';
+
+export {
+    comprehensiveAnalysisToolDefinition,
+    handleComprehensiveAnalysisTool,
+} from './recommendation-output.js';

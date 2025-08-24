@@ -90,7 +90,7 @@ export async function handleComprehensiveAnalysisTool(
             })
         ]);
 
-        console.log('Phase 1: Analysis agents completed');
+        console.log('Phase 1: Analysis agents 1, 2, 3, 4 completed');
 
         // Check for errors in any analysis
         if (githubResult.isError || cloudResult.isError) {

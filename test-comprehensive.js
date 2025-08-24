@@ -23,7 +23,7 @@ async function testComprehensiveAnalysis() {
 
         // Test arguments
         const testArgs = {
-            repository_url: "https://github.com/microsoft/vscode", // change to test repository
+            repository_url: "https://github.com/jade-tseng/scale-advisor", // change to test repository
             analysis_depth: "detailed",
             focus_areas: ["scalability", "security", "performance"]
         };
@@ -32,7 +32,7 @@ async function testComprehensiveAnalysis() {
         console.log(`   Repository: ${testArgs.repository_url}`);
         console.log(`   Depth: ${testArgs.analysis_depth}`);
         console.log(`   Focus Areas: ${testArgs.focus_areas.join(', ')}`);
-        console.log('\n⏳ This may take 30-60 seconds due to multiple API calls...\n');
+        console.log('\n⏳ This may take 30-60 seconds due to multi-agent workflow with multiple API calls...\n');
 
         const startTime = Date.now();
         

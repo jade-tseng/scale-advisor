@@ -160,7 +160,7 @@ class MCPCLIClient {
                 params: {
                     name: 'analyze_repository_and_cloud',
                     arguments: {
-                        repository_url: 'https://github.com/microsoft/vscode',
+                        repository_url: 'https://github.com/jade-tseng/scale-advisor',
                         analysis_depth: 'basic',
                         focus_areas: ['scalability', 'performance']
                     }

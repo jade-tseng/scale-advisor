@@ -11,6 +11,19 @@ export function startHttpTransport(config: Config): void {
     const httpServer = createServer();
 
     httpServer.on('request', async (req, res) => {
+        // Add CORS headers
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, mcp-session-id');
+        res.setHeader('Access-Control-Expose-Headers', 'mcp-session-id');
+
+        // Handle preflight requests
+        if (req.method === 'OPTIONS') {
+            res.writeHead(200);
+            res.end();
+            return;
+        }
+
         const url = new URL(req.url!, `http://${req.headers.host}`);
 
         switch (url.pathname) {

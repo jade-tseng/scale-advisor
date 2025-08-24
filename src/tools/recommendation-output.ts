@@ -75,32 +75,28 @@ export async function handleComprehensiveAnalysisTool(
             throw new Error("Invalid arguments for analyze_repository_and_cloud. Repository URL is required and must be a valid GitHub URL.");
         }
 
-        console.log('Phase 1: Starting concurrent analysis...');
+        console.log('Phase 1: Starting GitHub and Cloud analysis...');
         
-        // Phase 1: Run GitHub, Cloud, and Security analysis concurrently
-        const [githubResult, cloudResult, securityResult] = await Promise.all([
+        // Phase 1: Run GitHub and Cloud analysis (skip security for speed)
+        const [githubResult, cloudResult] = await Promise.all([
             handleGitHubAnalyzerTool(client, { 
                 repository_url: args.repository_url, 
                 analysis_depth: args.analysis_depth || 'basic',
                 include_dependencies: true
             }),
             handleCloudAnalyzerTool(client, { 
-                analysis_type: 'detailed',
+                analysis_type: 'overview',
                 include_recommendations: true
-            }),
-            handleSecurityAnalyzerTool(client, { 
-                repository_url: args.repository_url, 
-                analysis_scope: 'all', 
-                severity_threshold: 'medium' 
             })
         ]);
 
+        console.log('Phase 1: Analysis agents completed');
+
         // Check for errors in any analysis
-        if (githubResult.isError || cloudResult.isError || securityResult.isError) {
+        if (githubResult.isError || cloudResult.isError) {
             const errors = [];
             if (githubResult.isError) errors.push(`GitHub: ${githubResult.content[0].text}`);
             if (cloudResult.isError) errors.push(`Cloud: ${cloudResult.content[0].text}`);
-            if (securityResult.isError) errors.push(`Security: ${securityResult.content[0].text}`);
             throw new Error(`Analysis failed: ${errors.join(', ')}`);
         }
 
@@ -109,9 +105,8 @@ export async function handleComprehensiveAnalysisTool(
         // Phase 2: Deep Analysis - Synthesize the results
         const githubContent = githubResult.content[0].text;
         const cloudContent = cloudResult.content[0].text;
-        const securityContent = securityResult.content[0].text;
 
-        const synthesisPrompt = `Analyze and synthesize these three analyses to identify key insights:
+        const synthesisPrompt = `Analyze and synthesize these two analyses to identify key insights:
 
 GITHUB REPOSITORY ANALYSIS:
 ${githubContent}
@@ -119,18 +114,14 @@ ${githubContent}
 CLOUD INFRASTRUCTURE ANALYSIS:
 ${cloudContent}
 
-SECURITY POSTURE ANALYSIS:
-${securityContent}
-
 Focus areas: ${args.focus_areas?.join(', ') || 'general analysis'}
 
 Provide a synthesis that identifies:
 1. **Alignment Issues**: Where the repository and cloud infrastructure don't align
 2. **Scaling Bottlenecks**: Potential issues for growth
 3. **Architecture Gaps**: Missing components or suboptimal configurations
-4. **Security Risks**: Critical security issues that impact scalability
-5. **Technology Mismatches**: Where repo tech stack doesn't match cloud setup
-6. **Key Insights**: Important observations from combining all three analyses`;
+4. **Technology Mismatches**: Where repo tech stack doesn't match cloud setup
+5. **Key Insights**: Important observations from combining both analyses`;
 
         const synthesis = await client.chatCompletion({
             messages: [

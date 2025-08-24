@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const { handleGitHubPRTool } = require('./dist/tools/github-pr.js');
-const { ClaudeClient } = require('./dist/client.js');
+import { handleGitHubPRTool } from './dist/tools/github-pr.js';
+import { ClaudeClient } from './dist/client.js';
 
 async function testGitHubPRTool() {
     console.log('🧪 Testing GitHub PR Tool...\n');
@@ -38,8 +38,9 @@ async function testGitHubPRTool() {
     }
 }
 
-if (require.main === module) {
+// Run the test if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
     testGitHubPRTool();
 }
 
-module.exports = { testGitHubPRTool };
+export { testGitHubPRTool };

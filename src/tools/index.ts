@@ -29,3 +29,8 @@ export {
     infraGenToolDefinition,
     handleInfraGenTool,
 } from './infra-gen.js';
+
+export {
+    githubPRToolDefinition,
+    handleGitHubPRTool,
+} from './github-pr.js';
